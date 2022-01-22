@@ -9,9 +9,6 @@
     <Reference Include="ScriptPortal.Vegas">
       <HintPath>..\..\ScriptPortal.Vegas.dll</HintPath>
     </Reference>
-    <Reference Include="Sony.Vegas">
-      <HintPath>..\..\Sony.Vegas.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
