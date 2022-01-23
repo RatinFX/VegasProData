@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ScriptPortal.Vegas;
 
 namespace VegasProData
 {
-	/// <summary>
-	/// Make Vegas Data more accessible while scripting
-	/// </summary>
-	public class Data
+    /// <summary>
+    /// Make Vegas Data more accessible while scripting
+    /// </summary>
+    public class Data
 	{
 		/// <summary>
 		/// Initialize
