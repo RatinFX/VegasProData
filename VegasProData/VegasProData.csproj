@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ScriptPortal.Vegas">
-      <HintPath>..\..\..\..\Vegas Pro 14.0\ScriptPortal.Vegas.dll</HintPath>
+      <HintPath>..\..\ScriptPortal.Vegas.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
