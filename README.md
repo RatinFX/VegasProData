@@ -1,4 +1,4 @@
-# VegasProData
+# VEGAS Pro Data Collection
 Reuseable collection of VEGAS variables more accessible while scripting.
 
 ## Usage
