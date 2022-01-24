@@ -1,3 +1,7 @@
+# nvm
+apparently it won't just work properly if you import it as a .dll :|
+i'll see what i can do later
+
 # VEGAS Pro Data Collection
 Reuseable collection of VEGAS variables more accessible while scripting.
 
