@@ -19,9 +19,10 @@ namespace VegasProData
 			Vegas = vegas;
 		}
 
-		/**
+		/***
 		 *  GENERAL
 		 */
+
 		/// <summary>
 		/// Vegas Vegas -> VEGAS
 		/// </summary>
@@ -40,34 +41,47 @@ namespace VegasProData
 		/// <summary>
 		/// Available Video Effects
 		/// </summary>
-		public static PlugInNode VideoFx => Vegas.VideoFX;
+		public static IEnumerable<ExtendedPlugInNode> VideoFX => Vegas.VideoFX.Where(x => !x.IsContainer)
+			.Select(x => new ExtendedPlugInNode(x) { IsVideoFX = true });
 
 		/// <summary>
 		/// Available Audio Effects
 		/// </summary>
-		public static PlugInNode AudioFX => Vegas.AudioFX;
+		public static IEnumerable<ExtendedPlugInNode> AudioFX => Vegas.AudioFX.Where(x => !x.IsContainer)
+			.Select(x => new ExtendedPlugInNode(x) { IsAudioFX = true });
 
 		/// <summary>
 		/// Available Generators
 		/// </summary>
-		public static PlugInNode Generators => Vegas.Generators;
+		public static IEnumerable<ExtendedPlugInNode> Transitions => Vegas.Transitions.Where(x => !x.IsContainer)
+			.Select(x => new ExtendedPlugInNode(x) { IsTransition = true });
 
 		/// <summary>
 		/// Available Transitions
 		/// </summary>
-		public static PlugInNode Transitions => Vegas.Transitions;
+		public static IEnumerable<ExtendedPlugInNode> Generators => Vegas.Generators.Where(x => !x.IsContainer)
+			.Select(x => new ExtendedPlugInNode(x) { IsGenerator = true });
 
-		/**
+		/// <summary>
+		/// Search in the given List
+		/// </summary>
+		/// <returns>Filtered list</returns>
+		public static IEnumerable<ExtendedPlugInNode> SearchIn(IEnumerable<ExtendedPlugInNode> list, string text = "") =>
+			list.Where(x => x.Plugin.Name.ToLower().Contains(text.ToLower()));
+
+		/***
 		 *  TRACKS
 		 */
+
 		/// <summary>
 		/// Vegas Tracks
 		/// </summary>
 		public static Tracks Tracks => Vegas.Project.Tracks;
 
-		/**
+		/***
 		 *  > VIDEO TRACKS
 		 */
+
 		/// <summary>
 		/// Video Tracks
 		/// </summary>
@@ -83,9 +97,10 @@ namespace VegasProData
 		/// </summary>
 		public static Track FirstSelectedVideoTrack => SelectedVideoTracks.FirstOrDefault();
 
-		/**
+		/***
 		 *  > AUDIO TRACKS
 		 */
+
 		/// <summary>
 		/// Audio Tracks
 		/// </summary>
@@ -103,7 +118,7 @@ namespace VegasProData
 	}
 
 	/// <summary>
-	/// Extended PlugInNode
+	/// PlugInNode with more accessible info
 	/// </summary>
 	public class ExtendedPlugInNode
 	{
@@ -115,57 +130,10 @@ namespace VegasProData
 		public bool IsGenerator { get; set; } = false;
 
 		public ExtendedPlugInNode() { }
-		public ExtendedPlugInNode(PlugInNode plugin, bool isVideoFX, bool isAudioFX, bool isTransition, bool isGenerator)
+		public ExtendedPlugInNode(PlugInNode plugin)
 		{
+			Name = plugin.Name;
 			Plugin = plugin;
-			IsVideoFX = isVideoFX;
-			IsAudioFX = isAudioFX;
-			IsTransition = isTransition;
-			IsGenerator = isGenerator;
-		}
-		public ExtendedPlugInNode(string name, PlugInNode plugin, bool isVideoFX, bool isAudioFX, bool isTransition, bool isGenerator)
-			: this(plugin, isVideoFX, isAudioFX, isTransition, isGenerator)
-		{
-			Name = name;
-		}
-
-		/// <summary>
-		/// VEGAS VideoFX
-		/// </summary>
-		public IEnumerable<ExtendedPlugInNode> VideoFX => Separate(Data.Vegas.VideoFX, isVideoFX: true);
-
-		/// <summary>
-		/// VEGAS AudioFX
-		/// </summary>
-		public IEnumerable<ExtendedPlugInNode> AudioFX => Separate(Data.Vegas.AudioFX, isAudioFX: true);
-
-		/// <summary>
-		/// VEGAS Transitions
-		/// </summary>
-		public IEnumerable<ExtendedPlugInNode> Transitions => Separate(Data.Vegas.Transitions, isTransition: true);
-
-		/// <summary>
-		/// VEGAS Generators
-		/// </summary>
-		public IEnumerable<ExtendedPlugInNode> Generators => Separate(Data.Vegas.Generators, isGenerator: true);
-
-		/// <summary>
-		/// Separate the different PlugInNode lists by types
-		/// </summary>
-		/// <returns>PlugInNode list</returns>
-		public IEnumerable<ExtendedPlugInNode> Separate(PlugInNode list, bool isVideoFX = false, bool isAudioFX = false, bool isTransition = false, bool isGenerator = false)
-		{
-			return from plugin in list.Where(x => !x.IsContainer)
-				   select new ExtendedPlugInNode(plugin.Name, plugin, isVideoFX, isAudioFX, isTransition, isGenerator);
-		}
-
-		/// <summary>
-		/// Search in the given List
-		/// </summary>
-		/// <returns>Filtered list</returns>
-		public IEnumerable<ExtendedPlugInNode> SearchIn(IEnumerable<ExtendedPlugInNode> list, string filter = "")
-		{
-			return list.Where(x => x.Plugin.Name.ToLower().Contains(filter.ToLower()));
 		}
 	}
 }
