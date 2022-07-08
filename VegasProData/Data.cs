@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Threading;
 using ScriptPortal.Vegas;
-//using Sony.Vegas;
 
 namespace VegasProData
 {
