@@ -1,11 +1,78 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Threading;
+using Newtonsoft.Json;
 using ScriptPortal.Vegas;
 
 namespace VegasProData
 {
+    /// <summary>
+    /// Favorite types
+    /// </summary>
+    public enum FavType
+    {
+        VideoFX,
+        AudioFX,
+        Generators,
+        Transitions,
+    }
+
+    /// <summary>
+    /// Favorite configuration
+    /// </summary>
+    public class Favorite
+    {
+        public List<string> UniqueIDs { get; set; } = new List<string>();
+        public FavType Type { get; set; } = 0;
+        public Favorite() { }
+        public Favorite(FavType type) { Type = type; }
+        public Favorite(Favorite favorite) { UniqueIDs = favorite.UniqueIDs; Type = favorite.Type; }
+    }
+
+    /// <summary>
+    /// Saved Config JSON data
+    /// </summary>
+    public class Config
+    {
+        public bool DarkMode { get; set; } = true;
+        public List<Favorite> Favorites { get; set; }
+
+        public Config() { }
+        public Config(bool init = false)
+        {
+            if (!init) return;
+
+            Favorites = new List<Favorite> {
+                new Favorite(FavType.VideoFX),
+                new Favorite(FavType.AudioFX),
+                new Favorite(FavType.Generators),
+                //new Favorite(FavType.Transitions),
+            };
+        }
+
+        public void Add(string uniqueID, FavType type)
+        {
+            var fav = Find(type, x => !x.UniqueIDs.Contains(uniqueID));
+            if (fav == null) return;
+            fav.UniqueIDs.Add(uniqueID);
+        }
+
+        public void Remove(string uniqueID, FavType type)
+        {
+            var fav = Find(type, x => x.UniqueIDs.Contains(uniqueID));
+            if (fav == null) return;
+            fav.UniqueIDs.Remove(uniqueID);
+        }
+
+        private Favorite Find(FavType type, Func<Favorite, bool> predicate)
+        {
+            return Favorites.Where(x => x.Type == type).FirstOrDefault(predicate);
+        }
+
+    }
+
     /// <summary>
     /// PlugInNode with more accessible info
     /// </summary>
@@ -34,10 +101,23 @@ namespace VegasProData
             OFXLabel = plugin.OFXPlugIn?.Label ?? "";
             OFXGrouping = plugin.OFXPlugIn?.Grouping ?? "";
         }
+
+        public bool Contains(string input) =>
+            Search(UniqueID, input) ||
+            Search(Name, input) ||
+            Search(OFXLabel, input) ||
+            Search(OFXGrouping, input) ||
+            (Search(nameof(IsVideoFX), input) && IsVideoFX) ||
+            (Search(nameof(IsAudioFX), input) && IsAudioFX) ||
+            (Search(nameof(IsGenerator), input) && IsGenerator) ||
+            (Search(nameof(IsTransition), input) && IsTransition)
+            ;
+
+        static bool Search(string text, string input) => text.ToLower().Contains(input.ToLower());
     }
 
     /// <summary>
-    /// Make reused VEGAS Data more accessible while scripting
+    /// More accessible VEGAS Data
     /// </summary>
     public class Data
     {
@@ -51,7 +131,15 @@ namespace VegasProData
         }
 
         /***
-		 *  GENERAL
+         *  GENERAL
+         */
+
+        public static string ConfigFilePath = @".\VegasProData.json";
+
+        public static Config Config { get; set; } = new Config(init: true);
+
+        /***
+		 *  GENERAL VEGAS
 		 */
 
         /// <summary>
@@ -73,35 +161,35 @@ namespace VegasProData
         /// Available Video Effects
         /// </summary>
         public static IEnumerable<ExtendedPlugInNode> VideoFX => Vegas.VideoFX.Where(x => !x.IsContainer)
-            .Select(x => new ExtendedPlugInNode(x) { IsVideoFX = true });
+            .Select(x => new ExtendedPlugInNode(x) { IsVideoFX = true })
+            .OrderBy(x => x.Name);
 
         /// <summary>
         /// Available Audio Effects
         /// </summary>
         public static IEnumerable<ExtendedPlugInNode> AudioFX => Vegas.AudioFX.Where(x => !x.IsContainer)
-            .Select(x => new ExtendedPlugInNode(x) { IsAudioFX = true });
-
-        /// <summary>
-        /// Available Generators
-        /// </summary>
-        public static IEnumerable<ExtendedPlugInNode> Transitions => Vegas.Transitions.Where(x => !x.IsContainer)
-            .Select(x => new ExtendedPlugInNode(x) { IsTransition = true });
+            .Select(x => new ExtendedPlugInNode(x) { IsAudioFX = true })
+            .OrderBy(x => x.Name);
 
         /// <summary>
         /// Available Transitions
         /// </summary>
+        public static IEnumerable<ExtendedPlugInNode> Transitions => Vegas.Transitions.Where(x => !x.IsContainer)
+            .Select(x => new ExtendedPlugInNode(x) { IsTransition = true })
+            .OrderBy(x => x.Name);
+
+        /// <summary>
+        /// Available Generators
+        /// </summary>
         public static IEnumerable<ExtendedPlugInNode> Generators => Vegas.Generators.Where(x => !x.IsContainer)
-            .Select(x => new ExtendedPlugInNode(x) { IsGenerator = true });
+            .Select(x => new ExtendedPlugInNode(x) { IsGenerator = true })
+            .OrderBy(x => x.Name);
 
         /// <summary>
         /// Search in the given List
         /// </summary>
-        public static IEnumerable<ExtendedPlugInNode> SearchIn(IEnumerable<ExtendedPlugInNode> list, string text = "") => list.Where(x =>
-            x.UniqueID.ToLower().Contains(text.ToLower()) ||
-            x.Name.ToLower().Contains(text.ToLower()) ||
-            x.OFXLabel.ToLower().Contains(text.ToLower()) ||
-            x.OFXGrouping.ToLower().Contains(text.ToLower())
-        );
+        public static IEnumerable<ExtendedPlugInNode> SearchIn(IEnumerable<ExtendedPlugInNode> list, string input = "") =>
+            list.Where(x => x.Contains(input));
 
         /***
 		 *  TRACKS
@@ -151,9 +239,11 @@ namespace VegasProData
         public static Track FirstSelectedAudioTrack => SelectedAudioTracks.FirstOrDefault();
     }
 
+    /// <summary>
+    /// Helper Methods
+    /// </summary>
     public class Methods
     {
-
         /// <summary>
         /// Set an effect preset by name
         /// </summary>
@@ -170,6 +260,46 @@ namespace VegasProData
         {
             effect.Preset = effect.Presets[index].Name;
         }
+
+        /// <summary>
+        /// Read or Create Config file
+        /// </summary>
+        public static void ReadConfig()
+        {
+            if (!File.Exists(Data.ConfigFilePath)) SaveConfig();
+            var file = File.ReadAllText(Data.ConfigFilePath);
+            Data.Config = JsonConvert.DeserializeObject<Config>(file);
+        }
+
+        /// <summary>
+        /// Add FX to Favorites list and Save the list to a file
+        /// </summary>
+        /// <param name="uniqueID">UniqueID of the FX</param>
+        public static void AddToFavorites(string uniqueID, FavType type)
+        {
+            Data.Config.Add(uniqueID, type);
+            SaveConfig();
+        }
+
+        /// <summary>
+        /// Remove FX from the Favorites list and Save the list to a file
+        /// </summary>
+        /// <param name="uniqueID">UniqueID of the FX</param>
+        public static void RemoveFromFavorites(string uniqueID, FavType type)
+        {
+            Data.Config.Remove(uniqueID, type);
+            SaveConfig();
+        }
+
+        /// <summary>
+        /// Write the whole file
+        /// TODO: only remove / add new lines instead
+        /// </summary>
+        public static void SaveConfig()
+        {
+            var config = JsonConvert.SerializeObject(Data.Config);
+            File.WriteAllText(Data.ConfigFilePath, config);
+        }
     }
 
     /// <summary>
@@ -183,6 +313,7 @@ namespace VegasProData
     /// in which no other pending event has fired. Only the last event in the
     /// sequence is fired.
     /// 
+    /// Original source:
     /// https://weblog.west-wind.com/posts/2017/Jul/02/Debouncing-and-Throttling-Dispatcher-Events
     /// </summary>
     public class DebounceDispatcher
