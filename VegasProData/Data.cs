@@ -102,6 +102,14 @@ namespace VegasProData
             OFXGrouping = plugin.OFXPlugIn?.Grouping ?? "";
         }
 
+        public FavType GetFavType()
+        {
+            if (IsVideoFX) return FavType.VideoFX;
+            if (IsAudioFX) return FavType.AudioFX;
+            if (IsGenerator) return FavType.Generators;
+            return FavType.Transitions;
+        }
+
         public bool Contains(string input) =>
             Search(UniqueID, input) ||
             Search(Name, input) ||
@@ -134,7 +142,7 @@ namespace VegasProData
          *  GENERAL
          */
 
-        public static string ConfigFilePath = @".\VegasProData.json";
+        public static string ConfigFilePath = "";
 
         public static Config Config { get; set; } = new Config(init: true);
 
@@ -261,12 +269,24 @@ namespace VegasProData
             effect.Preset = effect.Presets[index].Name;
         }
 
+        static void GetAndSetConfigFolder()
+        {
+            // TODO: test all possible Vegas Application Extensions folders
+            //       instead of the hard coded Documents folder
+            Data.ConfigFilePath =
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+                @"\Vegas Application Extensions\VegasProData.json";
+
+            // Create Config file
+            if (!File.Exists(Data.ConfigFilePath)) SaveConfig();
+        }
+
         /// <summary>
         /// Read or Create Config file
         /// </summary>
         public static void ReadConfig()
         {
-            if (!File.Exists(Data.ConfigFilePath)) SaveConfig();
+            GetAndSetConfigFolder();
             var file = File.ReadAllText(Data.ConfigFilePath);
             Data.Config = JsonConvert.DeserializeObject<Config>(file);
         }
