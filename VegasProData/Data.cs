@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Threading;
@@ -31,12 +32,31 @@ namespace VegasProData
         public Favorite(Favorite favorite) { UniqueIDs = favorite.UniqueIDs; Type = favorite.Type; }
     }
 
+    public class AppTheme
+    {
+        public string Name { get; set; }
+        public Color PanelBG { get; set; }
+        public Color BoxBG { get; set; }
+        public Color Highlight { get; set; }
+        public Color Text { get; set; }
+        public AppTheme() { }
+        public AppTheme(string name, Color panelBG, Color boxBG, Color highlight, Color text)
+        {
+            Name = name;
+            PanelBG = panelBG;
+            BoxBG = boxBG;
+            Highlight = highlight;
+            Text = text;
+        }
+    }
+
     /// <summary>
     /// Saved Config JSON data
     /// </summary>
     public class Config
     {
         public bool DarkMode { get; set; } = true;
+        public List<AppTheme> Themes { get; set; }
         public List<Favorite> Favorites { get; set; }
 
         public Config() { }
@@ -44,11 +64,27 @@ namespace VegasProData
         {
             if (!init) return;
 
-            Favorites = new List<Favorite> {
+            Favorites = new List<Favorite>
+            {
                 new Favorite(FavType.VideoFX),
                 new Favorite(FavType.AudioFX),
                 new Favorite(FavType.Generators),
-                //new Favorite(FavType.Transitions),
+                new Favorite(FavType.Transitions),
+            };
+
+            Themes = new List<AppTheme>
+            {
+                new AppTheme("Dark",
+                    Color.FromArgb(45, 45, 45),
+                    Color.FromArgb(70, 70, 70),
+                    Color.FromArgb(45, 45, 45),
+                    Color.White),
+
+                new AppTheme("Light",
+                    Color.WhiteSmoke,
+                    Color.White,
+                    Color.WhiteSmoke,
+                    Color.Black),
             };
         }
 
@@ -196,8 +232,9 @@ namespace VegasProData
         /// <summary>
         /// Search in the given List
         /// </summary>
-        public static IEnumerable<ExtendedPlugInNode> SearchIn(IEnumerable<ExtendedPlugInNode> list, string input = "") =>
-            list.Where(x => x.Contains(input));
+        public static IEnumerable<ExtendedPlugInNode> SearchIn(IEnumerable<ExtendedPlugInNode> list, string input = "", bool onlyFav = false) =>
+            list.Where(x => x.Contains(input))
+                .Where(x => !onlyFav || Config.Favorites.Any(y => y.UniqueIDs.Contains(x.UniqueID)));
 
         /***
 		 *  TRACKS
