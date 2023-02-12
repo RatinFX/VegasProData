@@ -1,9 +1,9 @@
-﻿namespace VegasProData
+﻿namespace VegasProData.Favorites
 {
     /// <summary>
     /// Favorite types
     /// </summary>
-    public enum FavType
+    public enum FavoriteType
     {
         VideoFX,
         AudioFX,

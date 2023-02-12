@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Threading;
 
-namespace VegasProData
+namespace VegasProData.Threading
 {
     /// <summary>
     /// Provides Debounce() and Throttle() methods.
@@ -40,7 +40,6 @@ namespace VegasProData
             DispatcherPriority priority = DispatcherPriority.ApplicationIdle,
             Dispatcher disp = null)
         {
-
             Debounce(action, interval, param, priority, disp, throttle: true);
 
             TimerStarted = CurrentTime;
@@ -69,7 +68,7 @@ namespace VegasProData
             Dispatcher disp = null,
             bool throttle = false)
         {
-            // kill pending timer and pending ticks
+            // Kill pending timer and pending ticks
             timer?.Stop();
             timer = null;
 
@@ -79,13 +78,13 @@ namespace VegasProData
             if (throttle)
             {
                 CurrentTime = DateTime.UtcNow;
-                // if timeout is not up yet - adjust timeout to fire 
+                // If timeout is not up yet - adjust timeout to fire 
                 // with potentially new Action parameters           
                 if (CurrentTime.Subtract(TimerStarted).TotalMilliseconds < interval)
                     interval -= (int)CurrentTime.Subtract(TimerStarted).TotalMilliseconds;
             }
 
-            // timer is recreated for each event and effectively
+            // Timer is recreated for each event and effectively
             // resets the timeout. Action only fires after timeout has fully
             // elapsed without other events firing in between
             timer = new DispatcherTimer(TimeSpan.FromMilliseconds(interval), priority, (s, e) =>

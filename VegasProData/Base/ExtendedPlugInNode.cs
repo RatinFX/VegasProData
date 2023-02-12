@@ -1,6 +1,6 @@
 ﻿using ScriptPortal.Vegas;
 
-namespace VegasProData
+namespace VegasProData.Base
 {
     /// <summary>
     /// PlugInNode with more accessible info
@@ -22,20 +22,6 @@ namespace VegasProData
         {
             Name = name;
         }
-        public ExtendedPlugInNode(FavType type)
-        {
-            var name = "";
-            switch (type)
-            {
-                case FavType.VideoFX: name = "VIDEO FX"; break;
-                case FavType.AudioFX: name = "AUDIO FX"; break;
-                case FavType.Generators: name = "GENERATORS"; break;
-                case FavType.Transitions: name = "TRANSITIONS "; break;
-                default: break;
-            }
-
-            Name = "- - - - " + name + " - - - -";
-        }
         public ExtendedPlugInNode(PlugInNode plugin)
         {
             UniqueID = plugin.UniqueID ?? "";
@@ -44,13 +30,17 @@ namespace VegasProData
             OFXLabel = plugin.OFXPlugIn?.Label ?? "";
             OFXGrouping = plugin.OFXPlugIn?.Grouping ?? "";
         }
-
-        public FavType GetFavType()
+        public ExtendedPlugInNode(ExtendedPlugInNode p)
         {
-            if (IsVideoFX) return FavType.VideoFX;
-            if (IsAudioFX) return FavType.AudioFX;
-            if (IsGenerator) return FavType.Generators;
-            return FavType.Transitions;
+            UniqueID = p.UniqueID;
+            Name = p.Name;
+            Plugin = p.Plugin;
+            OFXLabel = p.OFXLabel;
+            OFXGrouping = p.OFXGrouping;
+            IsVideoFX = p.IsVideoFX;
+            IsAudioFX = p.IsAudioFX;
+            IsTransition = p.IsTransition;
+            IsGenerator = p.IsGenerator;
         }
 
         public bool Contains(string input) =>
@@ -58,12 +48,13 @@ namespace VegasProData
             Search(Name, input) ||
             Search(OFXLabel, input) ||
             Search(OFXGrouping, input) ||
-            (Search(nameof(IsVideoFX), input) && IsVideoFX) ||
-            (Search(nameof(IsAudioFX), input) && IsAudioFX) ||
-            (Search(nameof(IsGenerator), input) && IsGenerator) ||
-            (Search(nameof(IsTransition), input) && IsTransition)
+            Search(nameof(IsVideoFX), input) && IsVideoFX ||
+            Search(nameof(IsAudioFX), input) && IsAudioFX ||
+            Search(nameof(IsGenerator), input) && IsGenerator ||
+            Search(nameof(IsTransition), input) && IsTransition
             ;
 
-        static bool Search(string text, string input) => text.ToLower().Contains(input.ToLower());
+        static bool Search(string text, string input) =>
+            text.ToLower().Contains(input.ToLower());
     }
 }

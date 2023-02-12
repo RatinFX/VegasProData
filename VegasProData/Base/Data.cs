@@ -2,30 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VegasProData
+namespace VegasProData.Base
 {
     /// <summary>
     /// More accessible VEGAS Data
     /// </summary>
     public class Data
     {
-        /// <summary>
-        /// Initialize
-        /// </summary>
-        /// <param name="vegas">OUR VEGAS</param>
-        public void Initialize(Vegas vegas)
-        {
-            Vegas = vegas;
-        }
-
-        /***
-         *  GENERAL
-         */
-
-        public static string ConfigFilePath = "";
-
-        public static Config Config { get; set; } = new Config(init: true);
-
         /***
 		 *  GENERAL VEGAS
 		 */
@@ -72,31 +55,6 @@ namespace VegasProData
         public static IEnumerable<ExtendedPlugInNode> Generators => Vegas.Generators.Where(x => !x.IsContainer)
             .Select(x => new ExtendedPlugInNode(x) { IsGenerator = true })
             .OrderBy(x => x.Name);
-
-        /// <summary>
-        /// Search in the given List
-        /// </summary>
-        private static IEnumerable<ExtendedPlugInNode> SearchIn(
-            IEnumerable<ExtendedPlugInNode> list, FavType type = 0, string input = "", bool onlyFav = false)
-        {
-            return new List<ExtendedPlugInNode> { new ExtendedPlugInNode(type) }.Concat(
-                list
-                .Where(x => x.Contains(input))
-                .Where(x => !onlyFav ||
-                             Config.Favorites.Any(y => y.UniqueIDs.Contains(x.UniqueID) && y.Type == type)));
-        }
-
-        /// <summary>
-        /// Get the list of available PlugInNodes
-        /// </summary>
-        public static IEnumerable<ExtendedPlugInNode> GetSearchResult(string input, bool onlyFav = false)
-        {
-            return SearchIn(VideoFX, FavType.VideoFX, input, onlyFav)
-            .Concat(SearchIn(AudioFX, FavType.AudioFX, input, onlyFav))
-            .Concat(SearchIn(Generators, FavType.Generators, input, onlyFav))
-            .Concat(SearchIn(Transitions, FavType.Transitions, input, onlyFav))
-            ;
-        }
 
         /***
 		 *  TRACKS
