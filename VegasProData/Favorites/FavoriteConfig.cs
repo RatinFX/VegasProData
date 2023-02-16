@@ -5,17 +5,17 @@ using VegasProData.Base;
 
 namespace VegasProData.Favorites
 {
-    public class FavoriteConfig : BaseConfig
+    public class FavoriteConfig
     {
         public List<FavoriteItem> Favorites { get; set; } = new List<FavoriteItem>();
 
         public FavoriteConfig() { }
-        public FavoriteConfig(bool init) : base("VegasProData-Favorites")
+        public FavoriteConfig(bool init)
         {
             if (!init)
                 return;
 
-            var config = LoadConfig(this);
+            var config = BaseConfig.LoadConfig(this, "VegasProData-Favorites");
             if (config != null && config.Favorites != null)
             {
                 Favorites = config.Favorites;
@@ -65,7 +65,7 @@ namespace VegasProData.Favorites
 
         public void Save()
         {
-            SaveConfig(this);
+            BaseConfig.SaveConfig(this, "VegasProData-Favorites");
         }
 
         /// <summary>

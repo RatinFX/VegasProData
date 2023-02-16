@@ -31,14 +31,14 @@ namespace VegasProData.Base
         /// <summary>
         /// Create and Read Config file
         /// </summary>
-        public static T CreateReadConfig<T>(T config)
-            where T : BaseConfig
+        public static T CreateReadConfig<T>(T config, string filePath)
+            where T : class
         {
             // Create config file if it doesn't exist already
-            if (!File.Exists(config.ConfigFileName))
-                SaveConfig(config);
+            if (!File.Exists(filePath))
+                SaveConfig(config, filePath);
 
-            var file = File.ReadAllText(config.ConfigFileName);
+            var file = File.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<T>(file);
         }
 
@@ -46,11 +46,17 @@ namespace VegasProData.Base
         /// Write the whole file
         /// TODO: only remove / add new lines instead
         /// </summary>
-        public static void SaveConfig<T>(T config)
-            where T : BaseConfig
+        public static void SaveConfig<T>(T config, string filePath)
+            where T : class
         {
+            // Convert to .json
             var serialized = JsonConvert.SerializeObject(config);
-            File.WriteAllText(config.ConfigFileName, serialized);
+
+            // Create folder if it doesn't exist already
+            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+            // Write file
+            File.WriteAllText(filePath, serialized);
         }
     }
 }

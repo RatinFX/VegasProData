@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Layout;
 
@@ -10,9 +11,10 @@ namespace VegasProData.Theme
             Theme scheme,
             Form form = null,
             UserControl userControl = null,
-            ArrangedElementCollection collection = null,
-            Control.ControlCollection controls = null,
-            MenuStrip menuStrip = null)
+            ArrangedElementCollection elementCollection = null,
+            Control.ControlCollection controlCollection = null,
+            MenuStrip menuStrip = null
+        )
         {
             if (menuStrip != null)
                 menuStrip.Renderer = SetMenuStripRenderer(scheme);
@@ -23,8 +25,11 @@ namespace VegasProData.Theme
             if (userControl != null)
                 SetColors(scheme, userControl);
 
-            if (collection != null || controls != null)
-                SetCollectionColors(scheme, collection ?? controls);
+            if (elementCollection != null)
+                SetCollectionColors(scheme, elementCollection);
+
+            if (controlCollection != null)
+                SetCollectionColors(scheme, controlCollection);
         }
 
         public static ToolStripProfessionalRenderer SetMenuStripRenderer(Theme theme)

@@ -1,34 +1,38 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.IO;
 
 namespace VegasProData.Base
 {
     /// <summary>
     /// Saved Config JSON data
     /// </summary>
-    public class BaseConfig
+    public static class BaseConfig
     {
-        [JsonIgnore]
-        public readonly string ConfigFileName = "";
-
-        protected BaseConfig(){}
-        protected BaseConfig(string fileName)
+        public static string GetFolder(string folderName)
         {
-            ConfigFileName =
-                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
-                $@"\Vegas Application Extensions\{fileName}.json";
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+                $@"\Vegas Application Extensions\" + folderName;
+
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            return path;
         }
 
-        protected static T LoadConfig<T>(T config)
-            where T: BaseConfig
+        public static string GetCofigPath(string fileName) =>
+            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+            $@"\Vegas Application Extensions\{fileName}.json";
+
+        public static T LoadConfig<T>(T config, string fileName)
+            where T : class
         {
-            return Methods.CreateReadConfig(config);
+            return Methods.CreateReadConfig(config, GetCofigPath(fileName));
         }
 
-        protected static void SaveConfig<T>(T config)
-            where T : BaseConfig
+        public static void SaveConfig<T>(T config, string fileName)
+            where T : class
         {
-            Methods.SaveConfig(config);
+            Methods.SaveConfig(config, GetCofigPath(fileName));
         }
     }
 }

@@ -4,17 +4,17 @@ using VegasProData.Base;
 
 namespace VegasProData.Theme
 {
-    public class ThemeConfig : BaseConfig
+    public class ThemeConfig
     {
         public Theme CurrentTheme { get; set; } = Theme.Dark;
         public List<Theme> Themes { get; set; }
 
         public ThemeConfig() { }
-        public ThemeConfig(bool init) : base("VegasProData-Theme")
+        public ThemeConfig(bool init)
         {
             if (!init) return;
 
-            var config = Methods.CreateReadConfig(this);
+            var config = BaseConfig.LoadConfig(this, "VegasProData-Theme");
             CurrentTheme = config.CurrentTheme;
             Themes = config.Themes;
 
@@ -47,7 +47,7 @@ namespace VegasProData.Theme
 
         public void Save()
         {
-            SaveConfig(this);
+            BaseConfig.SaveConfig(this, "VegasProData-Theme");
         }
     }
 }
