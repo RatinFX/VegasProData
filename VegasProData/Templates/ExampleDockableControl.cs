@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.Windows.Forms;
+using VegasProData.Base;
 
 namespace VegasProData.Templates
 {
@@ -14,6 +15,12 @@ namespace VegasProData.Templates
         Vegas VEGAS { get; set; }
         public ExampleUserControl(Vegas vegas)
         {
+            // Set `Vegas` in `Data` to use
+            // `VegasProData.Base` related values/methods
+            Data.Vegas = vegas;
+
+            // OR it can be used in
+            // a local `Vegas` variable
             VEGAS = vegas;
         }
     }
