@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
@@ -27,9 +28,13 @@ namespace VegasProData.General
             [CallerMemberName] string callerName = ""
             )
         {
+#if DEBUG
+            Debug.WriteLine($"<!> Warning: \t{message}");
+            Debug.WriteLine($"[!] Caller: \t{callerName}");
+#endif
             return Base(
 #if DEBUG
-                callerName + "\n" +
+                "> " + callerName + "\n\n" +
 #endif
                 message,
                 title,
@@ -43,9 +48,13 @@ namespace VegasProData.General
             [CallerMemberName] string callerName = ""
             )
         {
+#if DEBUG
+            Debug.WriteLine($"[!] ERROR: \t{message}");
+            Debug.WriteLine($"[!] Caller: \t{callerName}");
+#endif
             return Base(
 #if DEBUG
-                callerName + "\n" +
+                "> " + callerName + "\n\n" +
 #endif
                 message,
                 title,
@@ -59,9 +68,14 @@ namespace VegasProData.General
             [CallerMemberName] string callerName = ""
         )
         {
+#if DEBUG
+            Debug.WriteLine($"[!] ERROR: \t{ex.Message}");
+            Debug.WriteLine($"[!] Caller: \t{callerName}");
+            Debug.WriteLine($"[!] StackTrace: \t{ex.StackTrace}");
+#endif
             return Base(
 #if DEBUG
-                callerName + "\n" + ex.StackTrace + "\n" +
+                "> " + callerName + "\n\n" + "> " + ex.StackTrace + "\n\n" +
 #endif
                 ex.Message,
                 title,
