@@ -44,7 +44,6 @@ namespace VegasProData.Base
 
         /// <summary>
         /// Write the whole file
-        /// TODO: only remove / add new lines instead
         /// </summary>
         public static void SaveConfig<T>(T config, string filePath)
             where T : class

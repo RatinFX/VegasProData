@@ -43,18 +43,23 @@ namespace VegasProData.Base
             IsGenerator = p.IsGenerator;
         }
 
-        public bool Contains(string input) =>
-            Search(UniqueID, input) ||
-            Search(Name, input) ||
-            Search(OFXLabel, input) ||
-            Search(OFXGrouping, input) ||
-            Search(nameof(IsVideoFX), input) && IsVideoFX ||
-            Search(nameof(IsAudioFX), input) && IsAudioFX ||
-            Search(nameof(IsGenerator), input) && IsGenerator ||
-            Search(nameof(IsTransition), input) && IsTransition
-            ;
+        public bool Contains(string input)
+        {
+            return
+                Search(UniqueID, input) ||
+                Search(Name, input) ||
+                Search(OFXLabel, input) ||
+                Search(OFXGrouping, input) ||
+                Search(nameof(IsVideoFX), input) && IsVideoFX ||
+                Search(nameof(IsAudioFX), input) && IsAudioFX ||
+                Search(nameof(IsGenerator), input) && IsGenerator ||
+                Search(nameof(IsTransition), input) && IsTransition
+                ;
+        }
 
-        static bool Search(string text, string input) =>
-            text.ToLower().Contains(input.ToLower());
+        static bool Search(string text, string input)
+        {
+            return text.ToLower().Contains(input.ToLower());
+        }
     }
 }

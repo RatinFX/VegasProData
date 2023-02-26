@@ -4,7 +4,10 @@ namespace VegasProData.Favorites
 {
     public class FavoriteExtendedPlugInNode : ExtendedPlugInNode
     {
-        public static FavoriteExtendedPlugInNode New(ExtendedPlugInNode p) => new FavoriteExtendedPlugInNode(p);
+        public static FavoriteExtendedPlugInNode New(ExtendedPlugInNode p)
+        {
+            return new FavoriteExtendedPlugInNode(p);
+        }
         public FavoriteExtendedPlugInNode(ExtendedPlugInNode p) : base(p) { }
         public FavoriteExtendedPlugInNode(FavoriteType type)
         {

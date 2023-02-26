@@ -18,9 +18,11 @@ namespace VegasProData.Base
             return path;
         }
 
-        public static string GetCofigPath(string fileName) =>
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
-            $@"\Vegas Application Extensions\{fileName}.json";
+        public static string GetCofigPath(string fileName)
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) +
+                $@"\Vegas Application Extensions\{fileName}.json";
+        }
 
         public static T LoadConfig<T>(T config, string fileName)
             where T : class
