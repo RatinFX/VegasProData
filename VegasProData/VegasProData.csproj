@@ -66,6 +66,7 @@
     <Compile Include="General\MessageBoxes.cs" />
     <Compile Include="General\Processes.cs" />
     <Compile Include="Base\BaseConfig.cs" />
+    <Compile Include="Theme\CustomColors.cs" />
     <Compile Include="Theme\CustomProfessionalColors.cs" />
     <Compile Include="Theme\Theme.cs" />
     <Compile Include="Base\Data.cs" />
@@ -76,7 +77,6 @@
     <Compile Include="Base\Methods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
