@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using VegasProData.Base;
@@ -8,14 +9,16 @@ namespace VegasProData.Favorites
     public class FavoriteConfig
     {
         public List<FavoriteItem> Favorites { get; set; } = new List<FavoriteItem>();
+        [JsonIgnore] private string FileName { get; }
 
         public FavoriteConfig() { }
-        public FavoriteConfig(bool init)
+        public FavoriteConfig(bool init, string fileName = null)
         {
             if (!init)
                 return;
 
-            var config = BaseConfig.LoadConfig(this, "VegasProData-Favorites");
+            FileName = fileName ?? "VegasProData-Favorites";
+            var config = BaseConfig.LoadConfig(this, FileName);
             if (config != null && config.Favorites != null)
             {
                 Favorites = config.Favorites;
@@ -65,7 +68,7 @@ namespace VegasProData.Favorites
 
         public void Save()
         {
-            BaseConfig.SaveConfig(this, "VegasProData-Favorites");
+            BaseConfig.SaveConfig(this, FileName);
         }
 
         /// <summary>
