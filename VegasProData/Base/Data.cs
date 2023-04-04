@@ -1,4 +1,8 @@
-﻿using ScriptPortal.Vegas;
+﻿#if VP14
+using ScriptPortal.Vegas;
+#elif VP13
+using Sony.Vegas;
+#endif
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,6 +26,11 @@ namespace VegasProData.Base
         /// Current cursor position on the timeline
         /// </summary>
         public static Timecode CursorPosition => Vegas.Transport.CursorPosition;
+
+        /// <summary>
+        /// Current cursor position on the timeline - could be different if the preview is playing
+        /// </summary>
+        public static Timecode PlayCursorPosition => Vegas.Transport.PlayCursorPosition;
 
         /// <summary>
         /// List of currently Selected Medias

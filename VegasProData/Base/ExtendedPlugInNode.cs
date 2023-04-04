@@ -1,4 +1,8 @@
-﻿using ScriptPortal.Vegas;
+﻿#if VP14
+using ScriptPortal.Vegas;
+#elif VP13
+using Sony.Vegas;
+#endif
 
 namespace VegasProData.Base
 {

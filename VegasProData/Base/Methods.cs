@@ -1,5 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿#if VP14
 using ScriptPortal.Vegas;
+#elif VP13
+using Sony.Vegas;
+#endif
+using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
 
