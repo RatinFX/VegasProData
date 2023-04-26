@@ -1,4 +1,4 @@
-﻿#if VP14
+﻿#if VP14 || DEBUG
 using ScriptPortal.Vegas;
 #elif VP13
 using Sony.Vegas;

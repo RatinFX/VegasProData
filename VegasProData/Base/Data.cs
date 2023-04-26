@@ -1,4 +1,4 @@
-﻿#if VP14
+﻿#if VP14 || DEBUG
 using ScriptPortal.Vegas;
 #elif VP13
 using Sony.Vegas;
@@ -36,6 +36,16 @@ namespace VegasProData.Base
         /// List of currently Selected Medias
         /// </summary>
         public static IEnumerable<TrackEvent> SelectedMedias => Tracks.SelectMany(x => x.Events.Where(y => y.Selected));
+        
+        /// <summary>
+        /// The First selected Video Event
+        /// </summary>
+        public static VideoEvent FirstSelectedVideoEvent => SelectedMedias?.FirstOrDefault(x => x.IsVideo()) as VideoEvent;
+
+        /// <summary>
+        /// The First selected Audio Event
+        /// </summary>
+        public static AudioEvent FirstSelectedAudioEvent => SelectedMedias?.FirstOrDefault(x => x.IsAudio()) as AudioEvent;
 
         /// <summary>
         /// Available Video Effects

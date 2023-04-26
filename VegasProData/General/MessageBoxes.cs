@@ -28,10 +28,9 @@ namespace VegasProData.General
             [CallerMemberName] string callerName = ""
             )
         {
-#if DEBUG
             Debug.WriteLine($"<!> Warning: \t{message}");
             Debug.WriteLine($"[!] Caller: \t{callerName}");
-#endif
+
             return Base(
 #if DEBUG
                 "> " + callerName + "\n\n" +
@@ -48,10 +47,9 @@ namespace VegasProData.General
             [CallerMemberName] string callerName = ""
             )
         {
-#if DEBUG
             Debug.WriteLine($"[!] ERROR: \t{message}");
             Debug.WriteLine($"[!] Caller: \t{callerName}");
-#endif
+
             return Base(
 #if DEBUG
                 "> " + callerName + "\n\n" +
@@ -68,11 +66,10 @@ namespace VegasProData.General
             [CallerMemberName] string callerName = ""
         )
         {
-#if DEBUG
             Debug.WriteLine($"[!] ERROR: \t{ex.Message}");
             Debug.WriteLine($"[!] Caller: \t{callerName}");
             Debug.WriteLine($"[!] StackTrace: \t{ex.StackTrace}");
-#endif
+
             return Base(
 #if DEBUG
                 "> " + callerName + "\n\n" + "> " + ex.StackTrace + "\n\n" +
