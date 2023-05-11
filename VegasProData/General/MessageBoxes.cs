@@ -25,6 +25,7 @@ namespace VegasProData.General
         public static DialogResult Warning(
             string message,
             string title = "Warning",
+            MessageBoxIcon icon = MessageBoxIcon.Warning,
             [CallerMemberName] string callerName = ""
             )
         {
@@ -37,13 +38,14 @@ namespace VegasProData.General
 #endif
                 message,
                 title,
-                icon: MessageBoxIcon.Warning
+                icon: icon
             );
         }
 
         public static DialogResult Error(
             string message,
             string title = "Something went wrong",
+            MessageBoxIcon icon = MessageBoxIcon.Error,
             [CallerMemberName] string callerName = ""
             )
         {
@@ -56,13 +58,14 @@ namespace VegasProData.General
 #endif
                 message,
                 title,
-                icon: MessageBoxIcon.Error
+                icon: icon
             );
         }
 
         public static DialogResult Error(
             Exception ex,
             string title = "Something went wrong",
+            MessageBoxIcon icon = MessageBoxIcon.Error,
             [CallerMemberName] string callerName = ""
         )
         {
@@ -76,7 +79,7 @@ namespace VegasProData.General
 #endif
                 ex.Message,
                 title,
-                icon: MessageBoxIcon.Error
+                icon: icon
             );
         }
 
@@ -88,13 +91,18 @@ namespace VegasProData.General
             );
         }
 
-        public static DialogResult YesNo(string message, string title)
+        public static DialogResult YesNo(
+            string message,
+            string title,
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo,
+            MessageBoxIcon icon = MessageBoxIcon.Question
+        )
         {
             return MessageBox.Show(
                 message,
                 title,
-                buttons: MessageBoxButtons.YesNo,
-                icon: MessageBoxIcon.Question
+                buttons: buttons,
+                icon: icon
             );
         }
     }
