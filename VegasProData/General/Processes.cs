@@ -24,7 +24,6 @@ namespace VegasProData.General
                 else
                 {
                     MessageBoxes.Error(ex);
-                    throw;
                 }
             }
         }
