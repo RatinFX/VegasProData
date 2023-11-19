@@ -70,7 +70,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Templates\ExampleDockableControl.cs">
@@ -81,10 +80,6 @@
     <Compile Include="Favorites\FavoriteData.cs" />
     <Compile Include="Favorites\FavoriteExtendedPlugInNode.cs" />
     <Compile Include="Favorites\FavoriteType.cs" />
-    <Compile Include="General\ControlHelper.cs" />
-    <Compile Include="General\Localization.cs" />
-    <Compile Include="General\MessageBoxes.cs" />
-    <Compile Include="General\Processes.cs" />
     <Compile Include="Base\BaseConfig.cs" />
     <Compile Include="Theme\CustomColors.cs" />
     <Compile Include="Theme\CustomProfessionalColors.cs" />
@@ -92,7 +87,6 @@
     <Compile Include="Base\Data.cs" />
     <Compile Include="Theme\ThemeConfig.cs" />
     <Compile Include="Theme\ThemeController.cs" />
-    <Compile Include="Threading\DebounceDispatcher.cs" />
     <Compile Include="Favorites\FavoriteItem.cs" />
     <Compile Include="Base\Methods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
