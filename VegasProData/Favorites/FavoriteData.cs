@@ -14,7 +14,7 @@ namespace VegasProData.Favorites
         /// <param name="type">Optional - List filter type</param>
         /// <param name="searchText">Optional - filter by SearchText</param>
         /// <param name="onlyFav">Optional - only show Favorited FX</param>
-        static IEnumerable<FavoriteExtendedPlugInNode> SearchIn(
+        public static IEnumerable<FavoriteExtendedPlugInNode> SearchIn(
             FavoriteConfig config,
             IEnumerable<ExtendedPlugInNode> list,
             FavoriteType type = 0,

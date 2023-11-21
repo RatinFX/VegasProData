@@ -21,6 +21,11 @@ namespace VegasProData.Favorites
             };
 
             Name = "- - - - " + name + " - - - -";
+
+            IsVideoFX = type is FavoriteType.VideoFX;
+            IsAudioFX = type is FavoriteType.AudioFX;
+            IsGenerator = type is FavoriteType.Generators;
+            IsTransition = type is FavoriteType.Transitions;
         }
 
         public FavoriteType GetFavType()
