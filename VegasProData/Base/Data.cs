@@ -36,7 +36,7 @@ namespace VegasProData.Base
         /// List of currently Selected Medias
         /// </summary>
         public static IEnumerable<TrackEvent> SelectedMedias => Tracks.SelectMany(x => x.Events.Where(y => y.Selected));
-        
+
         /// <summary>
         /// The First selected Video Event
         /// </summary>
@@ -84,6 +84,11 @@ namespace VegasProData.Base
         /// </summary>
         public static Tracks Tracks => Vegas.Project.Tracks;
 
+        /// <summary>
+        /// Currently Selected Tracks
+        /// </summary>
+        public static IEnumerable<Track> SelectedTracks => Tracks.Where(x => x.Selected);
+
         /***
 		 *  > VIDEO TRACKS
 		 */
@@ -91,7 +96,7 @@ namespace VegasProData.Base
         /// <summary>
         /// Video Tracks
         /// </summary>
-        public static IEnumerable<Track> VideoTracks => Vegas.Project.Tracks.Where(x => x.MediaType == MediaType.Video);
+        public static IEnumerable<Track> VideoTracks => Tracks.Where(x => x.MediaType == MediaType.Video);
 
         /// <summary>
         /// Selected Video Tracks
@@ -110,7 +115,7 @@ namespace VegasProData.Base
         /// <summary>
         /// Audio Tracks
         /// </summary>
-        public static IEnumerable<Track> AudioTracks => Vegas.Project.Tracks.Where(x => x.MediaType == MediaType.Audio);
+        public static IEnumerable<Track> AudioTracks => Tracks.Where(x => x.MediaType == MediaType.Audio);
 
         /// <summary>
         /// Selected Audio Tracks
