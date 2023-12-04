@@ -51,28 +51,28 @@ namespace VegasProData.Base
         /// Available Video Effects
         /// </summary>
         public static IEnumerable<ExtendedPlugInNode> VideoFX => Vegas.VideoFX.Where(x => !x.IsContainer)
-            .Select(x => new ExtendedPlugInNode(x) { IsVideoFX = true })
+            .Select(x => new ExtendedPlugInNode(x) { IsVideoFX = true, Type = PlugInNodeType.VideoFX })
             .OrderBy(x => x.Name);
 
         /// <summary>
         /// Available Audio Effects
         /// </summary>
         public static IEnumerable<ExtendedPlugInNode> AudioFX => Vegas.AudioFX.Where(x => !x.IsContainer)
-            .Select(x => new ExtendedPlugInNode(x) { IsAudioFX = true })
+            .Select(x => new ExtendedPlugInNode(x) { IsAudioFX = true, Type = PlugInNodeType.AudioFX })
             .OrderBy(x => x.Name);
 
         /// <summary>
         /// Available Transitions
         /// </summary>
         public static IEnumerable<ExtendedPlugInNode> Transitions => Vegas.Transitions.Where(x => !x.IsContainer)
-            .Select(x => new ExtendedPlugInNode(x) { IsTransition = true })
+            .Select(x => new ExtendedPlugInNode(x) { IsTransition = true, Type = PlugInNodeType.Transition })
             .OrderBy(x => x.Name);
 
         /// <summary>
         /// Available Generators
         /// </summary>
         public static IEnumerable<ExtendedPlugInNode> Generators => Vegas.Generators.Where(x => !x.IsContainer)
-            .Select(x => new ExtendedPlugInNode(x) { IsGenerator = true })
+            .Select(x => new ExtendedPlugInNode(x) { IsGenerator = true, Type = PlugInNodeType.Generator })
             .OrderBy(x => x.Name);
 
         /***

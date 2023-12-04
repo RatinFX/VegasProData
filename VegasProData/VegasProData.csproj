@@ -79,7 +79,7 @@
     <Compile Include="Favorites\FavoriteConfig.cs" />
     <Compile Include="Favorites\FavoriteData.cs" />
     <Compile Include="Favorites\FavoriteExtendedPlugInNode.cs" />
-    <Compile Include="Favorites\FavoriteType.cs" />
+    <Compile Include="Base\PlugInNodeType.cs" />
     <Compile Include="Base\BaseConfig.cs" />
     <Compile Include="Theme\CustomColors.cs" />
     <Compile Include="Theme\CustomProfessionalColors.cs" />

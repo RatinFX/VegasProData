@@ -20,6 +20,7 @@ namespace VegasProData.Base
         public bool IsAudioFX { get; set; } = false;
         public bool IsTransition { get; set; } = false;
         public bool IsGenerator { get; set; } = false;
+        public PlugInNodeType Type { get; set; }
 
         public ExtendedPlugInNode() { }
         public ExtendedPlugInNode(string name)
@@ -45,6 +46,16 @@ namespace VegasProData.Base
             IsAudioFX = p.IsAudioFX;
             IsTransition = p.IsTransition;
             IsGenerator = p.IsGenerator;
+            Type = p.Type;
+        }
+        public ExtendedPlugInNode(PlugInNodeType type)
+        {
+            Name = GetTypeName(type);
+            IsVideoFX = type is PlugInNodeType.VideoFX;
+            IsAudioFX = type is PlugInNodeType.AudioFX;
+            IsTransition = type is PlugInNodeType.Transition;
+            IsGenerator = type is PlugInNodeType.Generator;
+            Type = type;
         }
 
         public bool Contains(string input)
@@ -64,6 +75,18 @@ namespace VegasProData.Base
         static bool Search(string text, string input)
         {
             return text.ToLower().Contains(input.ToLower());
+        }
+
+        public static string GetTypeName(PlugInNodeType type)
+        {
+            return type switch
+            {
+                PlugInNodeType.VideoFX => "VideoFX",
+                PlugInNodeType.AudioFX => "AudioFX",
+                PlugInNodeType.Generator => "Generator",
+                PlugInNodeType.Transition => "Transition",
+                _ => ""
+            };
         }
     }
 }

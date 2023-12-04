@@ -34,35 +34,35 @@ namespace VegasProData.Favorites
             {
                 Favorites = new List<FavoriteItem>
                 {
-                    new FavoriteItem(FavoriteType.VideoFX),
-                    new FavoriteItem(FavoriteType.AudioFX),
-                    new FavoriteItem(FavoriteType.Generators),
-                    new FavoriteItem(FavoriteType.Transitions),
+                    new FavoriteItem(PlugInNodeType.VideoFX),
+                    new FavoriteItem(PlugInNodeType.AudioFX),
+                    new FavoriteItem(PlugInNodeType.Generator),
+                    new FavoriteItem(PlugInNodeType.Transition),
                 };
             }
 
             // No VideoFX list
-            if (!Favorites.Any(x => x.Type == FavoriteType.VideoFX))
+            if (Favorites.All(x => x.Type != PlugInNodeType.VideoFX))
             {
-                Favorites.Add(new FavoriteItem(FavoriteType.VideoFX));
+                Favorites.Add(new FavoriteItem(PlugInNodeType.VideoFX));
             }
 
             // No AudioFX list
-            if (!Favorites.Any(x => x.Type == FavoriteType.AudioFX))
+            if (Favorites.All(x => x.Type != PlugInNodeType.AudioFX))
             {
-                Favorites.Add(new FavoriteItem(FavoriteType.AudioFX));
+                Favorites.Add(new FavoriteItem(PlugInNodeType.AudioFX));
             }
 
             // No Generators list
-            if (!Favorites.Any(x => x.Type == FavoriteType.Generators))
+            if (Favorites.All(x => x.Type != PlugInNodeType.Generator))
             {
-                Favorites.Add(new FavoriteItem(FavoriteType.Generators));
+                Favorites.Add(new FavoriteItem(PlugInNodeType.Generator));
             }
 
             // No Transitions list
-            if (!Favorites.Any(x => x.Type == FavoriteType.Transitions))
+            if (Favorites.All(x => x.Type != PlugInNodeType.Transition))
             {
-                Favorites.Add(new FavoriteItem(FavoriteType.Transitions));
+                Favorites.Add(new FavoriteItem(PlugInNodeType.Transition));
             }
         }
 
@@ -85,7 +85,7 @@ namespace VegasProData.Favorites
         /// <summary>
         /// Add FX to Favorites list and Save the list to a file
         /// </summary>
-        public void Add(string uniqueID, FavoriteType type)
+        public void Add(string uniqueID, PlugInNodeType type)
         {
             var fav = Find(type, x => !x.UniqueIDs.Contains(uniqueID));
             if (fav == null)
@@ -110,7 +110,7 @@ namespace VegasProData.Favorites
         /// <summary>
         /// Remove FX from the Favorites list and Save the list to a file
         /// </summary>
-        public void Remove(string uniqueID, FavoriteType type)
+        public void Remove(string uniqueID, PlugInNodeType type)
         {
             var fav = Find(type, x => x.UniqueIDs.Contains(uniqueID));
             if (fav == null)
@@ -124,7 +124,7 @@ namespace VegasProData.Favorites
         /// <summary>
         /// Find the first Item by Type and Predicate
         /// </summary>
-        public FavoriteItem Find(FavoriteType type, Func<FavoriteItem, bool> predicate)
+        public FavoriteItem Find(PlugInNodeType type, Func<FavoriteItem, bool> predicate)
         {
             return Favorites.Where(x => x.Type == type).FirstOrDefault(predicate);
         }

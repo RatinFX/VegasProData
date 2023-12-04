@@ -9,31 +9,31 @@ namespace VegasProData.Favorites
             return new FavoriteExtendedPlugInNode(p);
         }
         public FavoriteExtendedPlugInNode(ExtendedPlugInNode p) : base(p) { }
-        public FavoriteExtendedPlugInNode(FavoriteType type)
+        public FavoriteExtendedPlugInNode(PlugInNodeType type)
         {
             var name = type switch
             {
-                FavoriteType.VideoFX => "VIDEO FX",
-                FavoriteType.AudioFX => "AUDIO FX",
-                FavoriteType.Generators => "GENERATORS",
-                FavoriteType.Transitions => "TRANSITIONS ",
+                PlugInNodeType.VideoFX => "VIDEO FX",
+                PlugInNodeType.AudioFX => "AUDIO FX",
+                PlugInNodeType.Generator => "GENERATORS",
+                PlugInNodeType.Transition => "TRANSITIONS ",
                 _ => ""
             };
 
             Name = "- - - - " + name + " - - - -";
 
-            IsVideoFX = type is FavoriteType.VideoFX;
-            IsAudioFX = type is FavoriteType.AudioFX;
-            IsGenerator = type is FavoriteType.Generators;
-            IsTransition = type is FavoriteType.Transitions;
+            IsVideoFX = type is PlugInNodeType.VideoFX;
+            IsAudioFX = type is PlugInNodeType.AudioFX;
+            IsGenerator = type is PlugInNodeType.Generator;
+            IsTransition = type is PlugInNodeType.Transition;
         }
 
-        public FavoriteType GetFavType()
+        public PlugInNodeType GetFavType()
         {
-            if (IsVideoFX) return FavoriteType.VideoFX;
-            if (IsAudioFX) return FavoriteType.AudioFX;
-            if (IsGenerator) return FavoriteType.Generators;
-            return FavoriteType.Transitions;
+            if (IsVideoFX) return PlugInNodeType.VideoFX;
+            if (IsAudioFX) return PlugInNodeType.AudioFX;
+            if (IsGenerator) return PlugInNodeType.Generator;
+            return PlugInNodeType.Transition;
         }
     }
 }

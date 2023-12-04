@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using VegasProData.Base;
 
 namespace VegasProData.Favorites
 {
@@ -8,10 +9,10 @@ namespace VegasProData.Favorites
     public class FavoriteItem
     {
         public HashSet<string> UniqueIDs { get; set; } = new HashSet<string>();
-        public FavoriteType Type { get; set; } = 0;
+        public PlugInNodeType Type { get; set; } = 0;
 
         public FavoriteItem() { }
-        public FavoriteItem(FavoriteType type)
+        public FavoriteItem(PlugInNodeType type)
         {
             Type = type;
         }

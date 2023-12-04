@@ -17,7 +17,7 @@ namespace VegasProData.Favorites
         public static IEnumerable<FavoriteExtendedPlugInNode> SearchIn(
             FavoriteConfig config,
             IEnumerable<ExtendedPlugInNode> list,
-            FavoriteType type = 0,
+            PlugInNodeType type = 0,
             string searchText = "",
             bool onlyFav = false
         )
@@ -44,10 +44,10 @@ namespace VegasProData.Favorites
             bool onlyFav = false
         )
         {
-            return SearchIn(config, VideoFX, FavoriteType.VideoFX, searchText, onlyFav)
-                .Concat(SearchIn(config, AudioFX, FavoriteType.AudioFX, searchText, onlyFav))
-                .Concat(SearchIn(config, Generators, FavoriteType.Generators, searchText, onlyFav))
-                .Concat(SearchIn(config, Transitions, FavoriteType.Transitions, searchText, onlyFav));
+            return SearchIn(config, VideoFX, PlugInNodeType.VideoFX, searchText, onlyFav)
+                .Concat(SearchIn(config, AudioFX, PlugInNodeType.AudioFX, searchText, onlyFav))
+                .Concat(SearchIn(config, Generators, PlugInNodeType.Generator, searchText, onlyFav))
+                .Concat(SearchIn(config, Transitions, PlugInNodeType.Transition, searchText, onlyFav));
         }
     }
 }
