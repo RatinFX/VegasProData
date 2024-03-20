@@ -53,7 +53,7 @@ namespace VegasProData.Base
             where T : class
         {
             // Convert to .json
-            var serialized = JsonConvert.SerializeObject(config);
+            var serialized = JsonConvert.SerializeObject(config, Formatting.Indented);
 
             // Create folder if it doesn't exist already
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
