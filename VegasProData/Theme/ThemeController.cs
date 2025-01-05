@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
 using System.Windows.Forms.Layout;
 
 namespace VegasProData.Theme
@@ -14,20 +16,28 @@ namespace VegasProData.Theme
             MenuStrip menuStrip = null
         )
         {
-            if (menuStrip != null)
-                menuStrip.Renderer = SetMenuStripRenderer(scheme);
+            try
+            {
+                if (menuStrip != null)
+                    menuStrip.Renderer = SetMenuStripRenderer(scheme);
 
-            if (form != null)
-                SetColors(scheme, form);
+                if (form != null)
+                    SetColors(scheme, form);
 
-            if (userControl != null)
-                SetColors(scheme, userControl);
+                if (userControl != null)
+                    SetColors(scheme, userControl);
 
-            if (elementCollection != null)
-                SetCollectionColors(scheme, elementCollection);
+                if (elementCollection != null)
+                    SetCollectionColors(scheme, elementCollection);
 
-            if (controlCollection != null)
-                SetCollectionColors(scheme, controlCollection);
+                if (controlCollection != null)
+                    SetCollectionColors(scheme, controlCollection);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return;
+            }
         }
 
         public static ToolStripProfessionalRenderer SetMenuStripRenderer(Theme theme)
@@ -56,6 +66,22 @@ namespace VegasProData.Theme
                         continue;
 
                     SetCollectionColors(theme, i.Items);
+                    continue;
+                }
+
+                if (item is ToolStripSeparator)
+                {
+                    var i = item as ToolStripSeparator;
+
+                    i.Paint += CustomSeparator_Paint;
+
+                    void CustomSeparator_Paint(object sender, PaintEventArgs e)
+                    {
+                        var s = (ToolStripSeparator)sender;
+                        e.Graphics.FillRectangle(new SolidBrush(theme.BoxBG), 0, 0, s.Width, s.Height);
+                        e.Graphics.DrawLine(new Pen(theme.Text), 30, s.Height / 2, s.Width - 4, s.Height / 2);
+                    }
+
                     continue;
                 }
 
