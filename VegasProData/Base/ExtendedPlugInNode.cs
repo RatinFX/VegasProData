@@ -48,6 +48,7 @@ namespace VegasProData.Base
             IsGenerator = p.IsGenerator;
             Type = p.Type;
         }
+
         public ExtendedPlugInNode(PlugInNodeType type)
         {
             Name = GetTypeName(type);
@@ -58,6 +59,11 @@ namespace VegasProData.Base
             Type = type;
         }
 
+        /// <summary>
+        /// Anything matches the input
+        /// - UniqueID, Name, OFXLabel, OFXGrouping,
+        /// - IsVideoFX, IsAudio, IsGenerator, IsTransition
+        /// </summary>
         public bool Contains(string input)
         {
             return
